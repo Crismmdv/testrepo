@@ -22,14 +22,10 @@ jobs:
         run: |
           pip install rsconnect-python
 
-      - name: Configure rsconnect
+      - name: Deploy to shinyapps.io
         run: |
-          rsconnect configure --name ${{ secrets.SHINYAPPS_NAME }} --token ${{ secrets.SHINYAPPS_TOKEN }} --secret ${{ secrets.SHINYAPPS_SECRET }}
+          rsconnect deploy shinyapps.io --name $SHINYAPPS_NAME --title app --token $SHINYAPPS_TOKEN --secret $SHINYAPPS_SECRET --path .
         env:
           SHINYAPPS_NAME: ${{ secrets.SHINYAPPS_NAME }}
           SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
           SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
-
-      - name: Deploy to shinyapps.io
-        run: |
-          rsconnect deploy shinyapps.io --name ${{ secrets.SHINYAPPS_NAME }} --title app --path .
