@@ -20,7 +20,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          R -e "install.packages(c('rsconnect', 'shiny', 'plotly', 'readr', 'dplyr'), dependencies = TRUE)"
+          R -e "install.packages('rsconnect', repos='https://cloud.r-project.org/')"
+          R -e "install.packages(c('shiny', 'plotly', 'readr', 'dplyr'), dependencies = TRUE)"
+
+      - name: Verify package installation
+        run: |
+          R -e "library(rsconnect); library(shiny); library(plotly); library(readr); library(dplyr)"
 
       - name: Deploy to shinyapps.io
         env:
