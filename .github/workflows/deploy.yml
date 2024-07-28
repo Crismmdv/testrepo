@@ -24,7 +24,7 @@ jobs:
 
       - name: Deploy to shinyapps.io
         run: |
-          rsconnect deploy shiny . --name $SHINYAPPS_NAME --title "Shiny App" --token $SHINYAPPS_TOKEN --secret $SHINYAPPS_SECRET
+          rsconnect deploy shiny . --name $SHINYAPPS_NAME --title "Mi Aplicación Shiny" --token $SHINYAPPS_TOKEN --secret $SHINYAPPS_SECRET
         env:
           SHINYAPPS_NAME: ${{ secrets.SHINYAPPS_NAME }}
           SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
