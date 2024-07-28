@@ -1,0 +1,35 @@
+name: Deploy Shiny App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install rsconnect-python
+        run: |
+          pip install rsconnect-python
+
+      - name: Configure rsconnect
+        run: |
+          rsconnect configure --name ${{ secrets.SHINYAPPS_NAME }} --token ${{ secrets.SHINYAPPS_TOKEN }} --secret ${{ secrets.SHINYAPPS_SECRET }}
+        env:
+          SHINYAPPS_NAME: ${{ secrets.SHINYAPPS_NAME }}
+          SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
+          SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
+
+      - name: Deploy to shinyapps.io
+        run: |
+          rsconnect deploy shinyapps.io --name ${{ secrets.SHINYAPPS_NAME }} --title app --path .
