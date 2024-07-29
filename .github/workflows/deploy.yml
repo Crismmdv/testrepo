@@ -20,20 +20,24 @@ jobs:
 
       - name: Install rsconnect
         run: |
-          R -e "install.packages('rsconnect', repos='https://cloud.r-project.org/')"
+          R -e 'install.packages("rsconnect", repos="https://cloud.r-project.org/")'
 
       - name: Install other dependencies
         run: |
-          R -e "install.packages(c('shiny', 'plotly', 'readr', 'dplyr'), dependencies = TRUE)"
+          R -e 'install.packages(c("shiny", "plotly", "readr", "dplyr"), dependencies=TRUE)'
 
       - name: Verify package installation
         run: |
-          R -e "library(rsconnect); library(shiny); library(plotly); library(readr); library(dplyr)"
+          R -e 'if (!require("rsconnect")) stop("rsconnect not installed")'
+          R -e 'if (!require("shiny")) stop("shiny not installed")'
+          R -e 'if (!require("plotly")) stop("plotly not installed")'
+          R -e 'if (!require("readr")) stop("readr not installed")'
+          R -e 'if (!require("dplyr")) stop("dplyr not installed")'
 
       - name: Deploy to shinyapps.io
         env:
           SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
           SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
         run: |
-          R -e "rsconnect::setAccountInfo(name='crismmdv', token=Sys.getenv('SHINYAPPS_TOKEN'), secret=Sys.getenv('SHINYAPPS_SECRET'))"
-          R -e "rsconnect::deployApp(appDir = '.', appName = Sys.getenv('SHINYAPPS_NAME'))"
+          R -e 'rsconnect::setAccountInfo(name="crismmdv", token=Sys.getenv("SHINYAPPS_TOKEN"), secret=Sys.getenv("SHINYAPPS_SECRET"))'
+          R -e 'rsconnect::deployApp(appDir=".", appName=Sys.getenv("SHINYAPPS_NAME"))'
